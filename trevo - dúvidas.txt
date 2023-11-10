@@ -1,0 +1,35 @@
+
+/// @dev Mapping for converting a number into a prize type
+mapping(TokenType => uint256) public tokenTypeToUint;
+Constructor
+tokenTypeToUint[TokenType.ERC20] = 0;
+tokenTypeToUint[TokenType.ERC721] = 1;
+tokenTypeToUint[TokenType.ERC1155] = 2;
+
+
+    Creator memory newCreator = Creator({
+      id: nextCreatorId,
+      wallet: _creator,
+      totalRaffles: 0,
+      paids: 0,
+      canceleds: 0,
+      reputation: 5, <-----------
+      authorized: true
+    });
+
+  /// @dev Function to check if the duration in the raffle is within the allowed durations in the contract
+  /// @param _duration Duration in seconds: 604800 || 1209600 || 1814400 || 2592000
+  function isValidDuration(uint256 _duration) internal pure returns (bool) {
+    uint256[] memory allowedDurations = new uint256[](4);
+    allowedDurations[0] = 7 days;
+    allowedDurations[1] = 14 days;
+    allowedDurations[2] = 21 days;
+    allowedDurations[3] = 30 days;
+
+    for (uint256 i = 0; i < allowedDurations.length; i++) {
+      if (_duration == allowedDurations[i]) {
+        return true;
+      }
+    }
+    return false;
+  }
